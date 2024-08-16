@@ -1,12 +1,38 @@
 import 'package:get/get.dart';
-import 'package:social_circle/api/api_service.dart';
-import 'package:social_circle/models/post.dart';
+import '../api/api_service.dart';
 import '../models/app_data.dart';
+import '../models/post.dart';
+import '../models/user.dart';
 
 class PostController extends GetxController {
-  var posts = [].obs; // List of posts, observable for GetX
-  var selectedPost = {}.obs;
-  var selectedUser = {}.obs;
+  var posts = [].obs;
+  var user = Rx<User>(
+    User(
+      name: '',
+      email: '',
+      id: -1,
+      username: '',
+      address: Address(
+        street: "",
+        suite: "",
+        city: "",
+        zipcode: "",
+        geo: Geo(
+          lat: "",
+          lng: "",
+        ),
+      ),
+      company: Company(
+        name: "",
+        catchPhrase: "",
+        bs: "",
+      ),
+      phone: '',
+      website: '',
+    ),
+  );
+
+  var comments = [].obs;
 
   ApiService apiService = ApiService();
 
@@ -19,26 +45,16 @@ class PostController extends GetxController {
   // Fetch posts from AppData
   Future<void> fetchPosts() async {
     List<Post> res = await apiService.fetchPosts();
-    print(res);
     AppData.instance.setPosts(res);
     posts.assignAll(AppData.instance.getPosts());
   }
 
-  // Fetch selected post from AppData
-  void fetchSelectedPost(int postId) {
-    var post = posts.firstWhere((element) => element.id == postId);
-    selectedPost.value = post.toJson();
-    AppData.instance.setSelectedPost(post.toJson());
+  // Fetch selected user for the post
+  Future<void> fetchUserDetails(int id) async {
+    user.value = await apiService.fetchUser(id);
   }
 
-  // Fetch selected user for the post
-  void fetchUserDetails() {
-    var user = {
-      'name': 'John Doe',
-      'email': 'john.doe@email.com',
-      'id': selectedPost.value['userId']
-    };
-    selectedUser.value = user;
-    AppData.instance.setSelectedUser(user);
+  Future<void> fetchPostComments(int id) async {
+    comments.value = await apiService.fetchComments(id);
   }
 }

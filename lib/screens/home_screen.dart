@@ -11,24 +11,58 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100], // Subtle background color
       appBar: AppBar(
         backgroundColor: Colors.blue[400],
-        title: const Text('Social Circle'),
+        elevation: 8,
+        title: const Text(
+          'Social Circle',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.2,
+          ),
+        ),
+        centerTitle: true,
+        // shape: const RoundedRectangleBorder(),
       ),
       body: Obx(
         () {
+          // Loading Indicator with a styled look
           if (postController.posts.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Colors.blue[300],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Fetching posts...",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
-          return ListView.builder(
-            itemCount: postController.posts.length,
-            itemBuilder: (context, index) {
-              var post = postController.posts[index];
-              return PostCard(
-                title: post.title,
-                body: post.body,
-              );
-            },
+
+          // Main content with padding and ListView
+          return Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+            child: ListView.builder(
+              itemCount: postController.posts.length,
+              itemBuilder: (context, index) {
+                var post = postController.posts[index];
+                return PostCard(
+                  post: post,
+                );
+              },
+            ),
           );
         },
       ),
