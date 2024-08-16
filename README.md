@@ -4,7 +4,7 @@
 
 ### Deadline : 17th August 2024, Saturday, 8:30 PM
 
-### *Work Assignment: Social Media App using JSONPlaceholder API*
+## Work Assignment : Social Media App using JSONPlaceholder API
 
 #### *Objective:*
 Build a simple social media app that fetches and displays data from the JSONPlaceholder API. The assignment is designed to help you learn and practice API fetching and posting, working with a singleton class, using GetX for state management, JSON parsing, async/await, Dio for HTTP requests, and exception handling.
