@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../exceptions/api_exception.dart';
 import '../models/comment.dart';
 import '../models/post.dart';
 import '../models/user.dart';
@@ -21,8 +22,8 @@ class ApiService {
       } else {
         throw ApiException('Failed to load posts');
       }
-    } on DioError catch (e) {
-      throw ApiException(e.message);
+    } on DioException catch (e) {
+      throw ApiException(e.message.toString());
     } catch (e) {
       throw ApiException('Unexpected error occurred');
     }
@@ -38,8 +39,8 @@ class ApiService {
       } else {
         throw ApiException('Failed to load comments');
       }
-    } on DioError catch (e) {
-      throw ApiException(e.message);
+    } on DioException catch (e) {
+      throw ApiException(e.message.toString());
     } catch (e) {
       throw ApiException('Unexpected error occurred');
     }
@@ -54,8 +55,8 @@ class ApiService {
       } else {
         throw ApiException('Failed to load user');
       }
-    } on DioError catch (e) {
-      throw ApiException(e.message);
+    } on DioException catch (e) {
+      throw ApiException(e.message.toString());
     } catch (e) {
       throw ApiException('Unexpected error occurred');
     }

@@ -1,3 +1,5 @@
+import 'post.dart';
+
 class AppData {
   AppData._privateConstructor();
 
@@ -5,23 +7,25 @@ class AppData {
 
   static AppData get instance => _instance;
 
-  List<Map<String, dynamic>> _posts = [];
-  Map<String, dynamic>? _selectedPost;
+  List<Post> _posts = [];
+  Post? _selectedPost; // Change to Post type
   Map<String, dynamic>? _selectedUser;
 
-  void setPosts(List<Map<String, dynamic>> posts) {
+  void setPosts(List<Post> posts) {
     _posts = posts;
   }
 
-  List<Map<String, dynamic>> getPosts() {
+  List<Post> getPosts() {
     return _posts;
   }
 
-  void setSelectedPost(Map<String, dynamic> post) {
+  void setSelectedPost(Post post) {
+    // Change to Post type
     _selectedPost = post;
   }
 
-  Map<String, dynamic>? getSelectedPost() {
+  Post? getSelectedPost() {
+    // Change to Post type
     return _selectedPost;
   }
 

@@ -23,9 +23,10 @@ class HomePage extends StatelessWidget {
           return ListView.builder(
             itemCount: postController.posts.length,
             itemBuilder: (context, index) {
+              var post = postController.posts[index];
               return PostCard(
-                title: postController.posts[index]['title'],
-                body: postController.posts[index]['body'],
+                title: post.title,
+                body: post.body,
               );
             },
           );
