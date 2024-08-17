@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/post_controller.dart';
+import '../models/app_data.dart';
 import '../widgets/post_card.dart';
 
 class HomePage extends StatelessWidget {
   final PostController postController = Get.put(PostController());
+  final posts = AppData.instance.getPosts();
 
   HomePage({super.key});
 
@@ -29,7 +31,7 @@ class HomePage extends StatelessWidget {
       body: Obx(
         () {
           // Loading Indicator with a styled look
-          if (postController.posts.isEmpty) {
+          if (posts.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -55,9 +57,9 @@ class HomePage extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
             child: ListView.builder(
-              itemCount: postController.posts.length,
+              itemCount: posts.length,
               itemBuilder: (context, index) {
-                var post = postController.posts[index];
+                var post = posts[index];
                 return PostCard(
                   post: post,
                 );

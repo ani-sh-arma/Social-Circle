@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_circle/models/app_data.dart';
 import '../controllers/post_controller.dart';
 import '../models/post.dart';
 import '../widgets/comment_card.dart';
@@ -27,25 +28,27 @@ class PostDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () => Get.to(UserProfileScreen(
-                user: postController.user.value,
-              )),
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blueGrey,
-                      width: 1.0,
+            // Reactive user display
+            Obx(() {
+              final user = AppData.instance.getSelectedUser();
+              return InkWell(
+                onTap: () {
+                  Get.to(UserProfileScreen(user: user));
+                },
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.blueGrey,
+                        width: 1.0,
+                      ),
                     ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Obx(
-                    () => Text(
-                      "Author: ${postController.user.value.name}",
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      "Author: ${user.name}",
                       style: const TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 16,
@@ -54,9 +57,10 @@ class PostDetailsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }),
             const SizedBox(height: 16),
+            // Post title
             Text(
               post.title,
               style: const TextStyle(
@@ -66,6 +70,7 @@ class PostDetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+            // Post body
             Text(
               post.body,
               style: const TextStyle(
@@ -74,18 +79,17 @@ class PostDetailsScreen extends StatelessWidget {
               ),
             ),
             Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.blueGrey,
-                      width: 1.0,
-                    ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.blueGrey,
+                    width: 1.0,
                   ),
                 ),
-                child: const SizedBox(
-                  height: 10,
-                )),
+              ),
+              child: const SizedBox(height: 10),
+            ),
             const SizedBox(height: 16),
             const Text(
               'Comments:',
@@ -96,19 +100,20 @@ class PostDetailsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+            // Reactive comments display
             Obx(() {
-              if (postController.comments.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
+              final comments = AppData.instance.getPostComments();
               return Expanded(
-                child: ListView.builder(
-                  itemCount: postController.comments.length,
-                  itemBuilder: (context, index) {
-                    return CommentWidget(
-                      comment: postController.comments[index],
-                    );
-                  },
-                ),
+                child: comments.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          return CommentWidget(
+                            comment: comments[index],
+                          );
+                        },
+                      ),
               );
             }),
           ],
@@ -117,3 +122,4 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 }
+ 
