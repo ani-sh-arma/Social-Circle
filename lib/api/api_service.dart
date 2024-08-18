@@ -12,7 +12,6 @@ class ApiService {
     _dio.options.baseUrl = _baseUrl;
   }
 
-  // Fetch posts
   Future<List<Post>> fetchPosts() async {
     try {
       final response = await _dio.get('/posts');
@@ -29,7 +28,6 @@ class ApiService {
     }
   }
 
-  // Fetch comments for a specific post
   Future<List<Comment>> fetchComments(int postId) async {
     try {
       final response = await _dio.get('/posts/$postId/comments');
@@ -46,7 +44,6 @@ class ApiService {
     }
   }
 
-  // Fetch user details by userId
   Future<User> fetchUser(int userId) async {
     try {
       final response = await _dio.get('/users/$userId');
@@ -54,6 +51,37 @@ class ApiService {
         return User.fromJson(response.data);
       } else {
         throw ApiException('Failed to load user');
+      }
+    } on DioException catch (e) {
+      throw ApiException(e.message.toString());
+    } catch (e) {
+      throw ApiException('Unexpected error occurred');
+    }
+  }
+
+  Future<Post> addPost({
+    required String title,
+    required String body,
+  }) async {
+    const url = '/posts';
+
+    try {
+      final response = await _dio.post(
+        url,
+        data: {
+          'userId': 1,
+          'title': title,
+          'body': body,
+        },
+        options: Options(
+          contentType: Headers.jsonContentType,
+        ),
+      );
+
+      if (response.statusCode == 201) {
+        return Post.fromJson(response.data);
+      } else {
+        throw ApiException('Failed to add post');
       }
     } on DioException catch (e) {
       throw ApiException(e.message.toString());

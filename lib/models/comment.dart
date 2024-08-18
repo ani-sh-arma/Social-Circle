@@ -13,7 +13,6 @@ class Comment {
     required this.body,
   });
 
-  // Factory constructor to create an instance from a JSON object
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       postId: json['postId'],
@@ -24,7 +23,6 @@ class Comment {
     );
   }
 
-  // Method to convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'postId': postId,

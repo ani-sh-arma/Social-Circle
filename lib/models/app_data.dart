@@ -47,12 +47,10 @@ class AppData extends GetxController {
   }
 
   void setSelectedPost(Post post) {
-    // Change to Post type
     _selectedPost.value = post;
   }
 
   Post getSelectedPost() {
-    // Change to Post type
     return _selectedPost.value;
   }
 

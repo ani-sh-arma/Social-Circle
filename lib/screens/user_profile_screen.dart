@@ -20,7 +20,6 @@ class UserProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Profile Header
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -73,7 +72,6 @@ class UserProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // User Info
             Container(
               width: Get.width,
               decoration: BoxDecoration(
@@ -109,7 +107,6 @@ class UserProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Address
             Container(
               width: Get.width,
               decoration: BoxDecoration(
@@ -151,7 +148,6 @@ class UserProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Company
             Container(
               width: Get.width,
               decoration: BoxDecoration(

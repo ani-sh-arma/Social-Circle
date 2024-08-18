@@ -11,7 +11,6 @@ class Post {
     required this.body,
   });
 
-  // Factory constructor to create an instance from a JSON object
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
       userId: json['userId'],
@@ -21,7 +20,6 @@ class Post {
     );
   }
 
-  // Method to convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,

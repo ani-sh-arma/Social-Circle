@@ -3,7 +3,6 @@ import '../models/comment.dart';
 
 class CommentWidget extends StatelessWidget {
   final Comment comment;
-
   const CommentWidget({super.key, required this.comment});
 
   @override

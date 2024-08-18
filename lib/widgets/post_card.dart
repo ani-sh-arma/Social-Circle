@@ -11,9 +11,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(PostDetailsScreen(
-          post: post,
-        ));
+        Get.to(PostDetailsScreen(post: post));
       },
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
@@ -26,7 +24,6 @@ class PostCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title with simple modern style
               Text(
                 post.title,
                 style: const TextStyle(
@@ -36,7 +33,6 @@ class PostCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10.0),
-              // Body with limited lines and 'Read More'
               Text(
                 post.body,
                 maxLines: 2,
@@ -47,7 +43,6 @@ class PostCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8.0),
-              // Simple Read More text
               const Align(
                 alignment: Alignment.centerRight,
                 child: Text(

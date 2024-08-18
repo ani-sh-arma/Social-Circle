@@ -19,7 +19,6 @@ class User {
     required this.company,
   });
 
-  // Factory constructor to create an instance from a JSON object
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
@@ -33,7 +32,6 @@ class User {
     );
   }
 
-  // Method to convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -63,7 +61,6 @@ class Address {
     required this.geo,
   });
 
-  // Factory constructor to create an instance from a JSON object
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       street: json['street'],
@@ -74,7 +71,6 @@ class Address {
     );
   }
 
-  // Method to convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'street': street,
@@ -95,7 +91,6 @@ class Geo {
     required this.lng,
   });
 
-  // Factory constructor to create an instance from a JSON object
   factory Geo.fromJson(Map<String, dynamic> json) {
     return Geo(
       lat: json['lat'],
@@ -103,7 +98,6 @@ class Geo {
     );
   }
 
-  // Method to convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'lat': lat,
@@ -123,7 +117,6 @@ class Company {
     required this.bs,
   });
 
-  // Factory constructor to create an instance from a JSON object
   factory Company.fromJson(Map<String, dynamic> json) {
     return Company(
       name: json['name'],
@@ -132,7 +125,6 @@ class Company {
     );
   }
 
-  // Method to convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'name': name,
