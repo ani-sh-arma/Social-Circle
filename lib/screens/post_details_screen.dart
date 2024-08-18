@@ -18,10 +18,8 @@ class PostDetailsScreen extends StatefulWidget {
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
   final PostController postController = Get.put(PostController());
-  late Timer _timeoutTimer;
-  final RxBool _isLoading = true.obs;
+  late Future<void> _fetchCommentsFuture;
   final RxBool _hasError = false.obs;
-  final Duration _timeoutDuration = const Duration(seconds: 10);
 
   @override
   void initState() {
@@ -29,32 +27,14 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 
     // Start loading user details and comments
     postController.fetchUserDetails(widget.post.userId);
-    postController.fetchPostComments(widget.post.id);
-
-    // Start a timer to check if comments are still loading
-    _timeoutTimer = Timer(_timeoutDuration, () {
-      if (_isLoading.value) {
-        setState(() {
-          _hasError.value = true;
-        });
-      }
+    _fetchCommentsFuture =
+        postController.fetchPostComments(widget.post.id).then((_) {
+      // Successful fetch, no error
+      _hasError.value = false;
+    }).catchError((_) {
+      // Handle error
+      _hasError.value = true;
     });
-
-    // Listen for changes to the comments list and update loading state
-    ever(AppData.instance.getPostComments().obs, (_) {
-      if (_timeoutTimer.isActive) {
-        _timeoutTimer.cancel();
-      }
-      setState(() {
-        _isLoading.value = false;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timeoutTimer.cancel();
-    super.dispose();
   }
 
   @override
@@ -139,43 +119,50 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            Obx(() {
-              final comments = AppData.instance.getPostComments();
-              if (_hasError.value) {
-                return const Center(
-                  child: Text(
-                    'No comments',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                  ),
-                );
-              }
+            Expanded(
+              child: FutureBuilder<void>(
+                future: _fetchCommentsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-              return Expanded(
-                child: _isLoading.value
-                    ? const Center(child: CircularProgressIndicator())
-                    : comments.isEmpty
-                        ? const Center(
-                            child: Text(
-                              'No comments',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: comments.length,
-                            itemBuilder: (context, index) {
-                              return CommentWidget(
-                                comment: comments[index],
-                              );
-                            },
-                          ),
-              );
-            }),
+                  if (snapshot.hasError || _hasError.value) {
+                    return const Center(
+                      child: Text(
+                        'No comments',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    );
+                  }
+
+                  final comments = AppData.instance.getPostComments();
+                  if (comments.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No comments',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: comments.length,
+                    itemBuilder: (context, index) {
+                      return CommentWidget(
+                        comment: comments[index],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

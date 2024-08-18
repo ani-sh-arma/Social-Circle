@@ -53,8 +53,11 @@ class UserProfileScreen extends StatelessWidget {
                     children: [
                       Text(
                         user.name,
-                        style: const TextStyle(
-                          fontSize: 22,
+                        // user.name.length > 20
+                        //     ? "${user.name.substring(0, 17)}..."
+                        //     : user.name,
+                        style: TextStyle(
+                          fontSize: user.name.length >= 20 ? 18 : 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),

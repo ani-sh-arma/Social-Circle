@@ -18,67 +18,87 @@ class HomePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Add a Comment'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
+        return Dialog(
+          child: Container(
+            width: Get.width,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Add a Post',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: bodyController,
-                decoration: const InputDecoration(
-                  labelText: 'Body',
+                const SizedBox(height: 16),
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Title',
+                  ),
                 ),
-                maxLines: 3,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final title = titleController.text;
-                final body = bodyController.text;
+                const SizedBox(height: 16),
+                TextField(
+                  controller: bodyController,
+                  decoration: const InputDecoration(
+                    labelText: 'Body',
+                  ),
+                  maxLines: 3,
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: Get.width,
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final title = titleController.text;
+                            final body = bodyController.text;
 
-                if (title.isNotEmpty && body.isNotEmpty) {
-                  try {
-                    final post =
-                        await apiService.addPost(title: title, body: body);
-                    AppData.instance
-                        .setPosts([...AppData.instance.getPosts(), post]);
-                    Get.snackbar(
-                      'Success',
-                      'Post Added.',
-                    );
-                  } catch (e) {
-                    Get.snackbar(
-                      'Error',
-                      'Something went wrong. Please try again later.',
-                    );
-                  }
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
-                } else {
-                  Get.snackbar(
-                    'Error',
-                    'Title and Body cannot be empty.',
-                  );
-                }
-              },
-              child: const Text('Post'),
+                            if (title.isNotEmpty && body.isNotEmpty) {
+                              try {
+                                final post = await apiService.addPost(
+                                    title: title, body: body);
+                                AppData.instance.setPosts(
+                                    [...AppData.instance.getPosts(), post]);
+                                Get.snackbar(
+                                  'Success',
+                                  'Post Added.',
+                                );
+                              } catch (e) {
+                                Get.snackbar(
+                                  'Error',
+                                  'Something went wrong. Please try again later.',
+                                );
+                              }
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pop();
+                            } else {
+                              Get.snackbar(
+                                'Error',
+                                'Title and Body cannot be empty.',
+                              );
+                            }
+                          },
+                          child: const Text('Post'),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-          ],
+          ),
         );
       },
     );
