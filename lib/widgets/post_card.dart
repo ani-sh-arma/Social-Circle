@@ -23,9 +23,6 @@ class PostCard extends StatelessWidget {
             ),
           ),
         ),
-        // margin: const EdgeInsets.symmetric(
-        //   vertical: 10,
-        // ),
         child: Card(
           color: Colors.transparent, // Transparent background
           elevation: 0, // Remove card elevation to show border clearly
